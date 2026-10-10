@@ -4,17 +4,35 @@ FuncStatus ParseLong(const char *str, long *result) {
     if (str == NULL || *str == '\0') {
         return StatusInvalidParameter;
     }
+
+    const char *p = str;
+    while (*p == ' ' || *p == '\t') p++;
+    if (*p == '-' || *p == '+') p++;
+    while (*p == '0') p++;
+
+    int digits = 0;
+    while (p[digits] >= '0' && p[digits] <= '9') {
+        digits++;
+    }
+
+    if (sizeof(long) == 4 && digits > 10) return StatusOverflow;
+    if (sizeof(long) == 8 && digits > 19) return StatusOverflow;
+
     char *endptr;
-    long value = strtol(str, &endptr, 10);
+    long long value = strtoll(str, &endptr, 10);
+
     if (endptr == str || *endptr != '\0') {
         return StatusInvalidParameter;
     }
+
     if (value > LONG_MAX || value < LONG_MIN) {
         return StatusOverflow;
     }
-    *result = value;
+
+    *result = (long)value;
     return StatusSuccess;
 }
+
 
 FuncStatus FindMultiplies(long x, int *has_multiplies) {
     if (x <= 0 || x > 100) {

@@ -65,7 +65,6 @@ int main(int argc, char *argv[]) {
             break;
         }
         case 'e': {
-            // Выделяем на стеке ровно столько памяти, сколько запросил пользователь (10 * x)
             long long table[10 * x];
             if (CreatePowersTable((int)x, table) == StatusInvalidParameter) {
                 printf("Ошибка: Для флага -e число должно быть в диапазоне от 1 до 10.\n");
