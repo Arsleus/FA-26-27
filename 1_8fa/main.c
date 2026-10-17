@@ -1,11 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "lab1_8.h"
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         printf("Ошибка: Неверное количество аргументов.\n");
         printf("Использование: %s <входной_файл> <выходной_файл>\n", argv[0]);
+        return 1;
+    }
+
+    const char *name_in = strrchr(argv[1], '/');
+    if (name_in == NULL) {
+        name_in = argv[1];
+    } else {
+        name_in++;
+    }
+
+    const char *name_out = strrchr(argv[2], '/');
+    if (name_out == NULL) {
+        name_out = argv[2];
+    } else {
+        name_out++;
+    }
+
+    if (strcmp(name_in, name_out) == 0) {
+        printf("Ошибка: Входной и выходной файлы не должны совпадать.\n");
         return 1;
     }
 
@@ -20,7 +40,7 @@ int main(int argc, char *argv[]) {
         printf("Ошибка: Не удалось создать выходной файл '%s'.\n", argv[2]);
         fclose(in);
         return 1;
-    }
+    } 
 
     char *num_buf = NULL;
     int buf_capacity = 0; 
