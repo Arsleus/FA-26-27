@@ -79,14 +79,15 @@ int main(int argc, char *argv[]) {
                         st = STATUS_ERR_OVERFLOW;
                         break;
                     }
-                    const char **strings = malloc(count * sizeof(char*));
+                    const char **strings = (const char **)malloc(count * sizeof(char*));
                     if (strings == NULL) {
                         st = STATUS_ERR_MEMORY;
                         break;
                     }
                     strings[0] = argv[2];
+                    size_t idx = 1;
                     for (int i = 4; i < argc; i++) {
-                        strings[i - 3] = argv[i];
+                        strings[idx++] = argv[i];
                     }
                     char *res = NULL;
                     st = op_shuffle_concat(strings, count, seed, &res);

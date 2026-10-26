@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c99 -Wall -Wextra
+CFLAGS = -std=c99 -g -Wall -Wextra -Wconversion -Wsign-conversion
 
 all: 1lab2pac.out
 
@@ -14,3 +14,5 @@ main.o: main.c 1lab2pac.h
 
 clean:
 	rm -f *.o 1lab2pac.out
+
+# valgrind --leak-check=full --show-leak-kinds=all и потом ./......out и тд

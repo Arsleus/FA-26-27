@@ -33,7 +33,7 @@ status_t op_reverse(const char *s, char **out) {
     if (len > SIZE_MAX - 1) {
         return STATUS_ERR_OVERFLOW;
     }
-    char *res = malloc(len + 1);
+    char *res = (char*)malloc(len + 1);
     if (res == NULL) {
         return STATUS_ERR_MEMORY;
     }
@@ -56,7 +56,7 @@ status_t op_upper_odd(const char *s, char **out) {
     if (len > SIZE_MAX - 1) {
         return STATUS_ERR_OVERFLOW;
     }
-    char *res = malloc(len + 1);
+    char *res = (char*)malloc(len + 1);
     if (res == NULL) {
         return STATUS_ERR_MEMORY;
     }
@@ -92,7 +92,7 @@ status_t op_partition(const char *s, char **out) {
     if (len > SIZE_MAX - 1) {
         return STATUS_ERR_OVERFLOW;
     }
-    char *res = malloc(len + 1);
+    char *res = (char*)malloc(len + 1);
     if (res == NULL) {
         return STATUS_ERR_MEMORY;
     }
@@ -160,13 +160,13 @@ status_t op_shuffle_concat(const char **strings, size_t count, unsigned int seed
     if (total_len > SIZE_MAX - 1) {
         return STATUS_ERR_OVERFLOW;
     }
-    char *res = malloc(total_len + 1);
+    char *res = (char*)malloc(total_len + 1);
     if (res == NULL) {
         return STATUS_ERR_MEMORY;
     }
     srand(seed);
     for (size_t i = count - 1; i > 0; i--) {
-        size_t j = (size_t)(rand() % (i + 1));
+        size_t j = (size_t)rand() % (i + 1);
         const char *temp = strings[i];
         strings[i] = strings[j];
         strings[j] = temp;
