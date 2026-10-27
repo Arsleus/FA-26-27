@@ -6,23 +6,17 @@
 #include <stdint.h>
 
 static int is_finite_fraction(int base, double fraction, double epsilon) {
-    int cap = (int)ceil((double)DBL_MANT_DIG * log(2.0) / log((double)base));
-    int significant = 0;
+    int cap = (int)((double)DBL_MANT_DIG * log(2.0) / log((double)base));
 
-    for (int i = 0; ; i++) {
+    for (int i = 0; i < cap; i++) {
         fraction *= base;
         fraction -= (int)fraction;
-
-        if (fraction > epsilon) {
-            significant++;
-        }
+        
         if (fraction <= epsilon) {
             return 1;
         }
-        if (significant >= cap) {
-            return 0;
-        }
     }
+    return 0;
 }
 
 status_t check_fractions(int base, size_t count, double epsilon, int **out_results, ...) {
