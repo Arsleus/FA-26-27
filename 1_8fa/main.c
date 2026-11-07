@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 #include "lab1_8.h"
 
 int main(int argc, char *argv[]) {
@@ -10,23 +11,18 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    const char *name_in = strrchr(argv[1], '/');
-    if (name_in == NULL) {
-        name_in = argv[1];
-    } else {
-        name_in++;
-    }
-
-    const char *name_out = strrchr(argv[2], '/');
-    if (name_out == NULL) {
-        name_out = argv[2];
-    } else {
-        name_out++;
-    }
-
-    if (strcmp(name_in, name_out) == 0) {
-        printf("Ошибка: Входной и выходной файлы не должны совпадать.\n");
+    struct stat stat_in, stat_out;
+    
+    if (stat(argv[1], &stat_in) != 0) {
+        printf("Ошибка: Не удалось найти входной файл '%s'.\n", argv[1]);
         return 1;
+    }
+
+    if (stat(argv[2], &stat_out) == 0) {
+        if (stat_in.st_dev == stat_out.st_dev && stat_in.st_ino == stat_out.st_ino) {
+            printf("Ошибка: Входной и выходной файлы указывают на один и тот же физический файл.\n");
+            return 1;
+        }
     }
 
     FILE *in = fopen(argv[1], "r");
